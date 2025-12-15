@@ -1,0 +1,1 @@
+#Python Definitions for OpenAI Function Calling 
