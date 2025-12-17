@@ -53,15 +53,15 @@ This is designed for small to medium-scale recruitment processes where initial t
    ```
 
 3. **Configure API Key**
-   Create a `.env` file in the project root:
-   ```
-   OPENAI_API=your_openai_api_key_here
-   ```
+    Create a `.env` file in the project root:
+    ```
+    OPENAI_API_KEY=your_openai_api_key_here
+    ```
 
 4. **Run the application**
-   ```bash
-   streamlit run app.py
-   ```
+    ```bash
+    streamlit run streamlit_app.py
+    ```
 
 The chatbot will be accessible at `http://localhost:8501`
 
@@ -102,7 +102,7 @@ The chatbot will be accessible at `http://localhost:8501`
 The system follows a modular agent-based architecture with orchestration:
 
 ```
-app.py (UI/State Management/Chat Interface)
+streamlit_app.py (UI/State Management/Chat Interface)
     ↓
 orchestrator.py (Flow Control & Stage Management)
     ├── agents/info_collector.py (Information extraction agent)
@@ -129,11 +129,12 @@ orchestrator.py (Flow Control & Stage Management)
 
 ### Key Files
 
-- `app.py`: Main Streamlit application, UI layout, session state initialization, chat interface
+- `streamlit_app.py`: Main Streamlit application, UI layout, session state initialization, chat interface
 - `orchestrator.py`: Core orchestration logic managing stage transitions and agent routing
 - `agents/info_collector.py`: Extracts structured candidate information using LLM
 - `agents/question_generator.py`: Generates adaptive technical questions (3-5 per candidate)
 - `agents/evaluator.py`: Evaluates candidate responses and provides scores (0-10), verdicts (PASS/BORDERLINE/FAIL), strengths, and weaknesses
+- `requirements.txt`: Python dependencies for deployment
 - `.env`: API keys and configuration (not tracked in git)
 
 ### Data Flow
@@ -257,8 +258,26 @@ The evaluator assesses answers based on:
 
 ### Local Deployment
 ```bash
-streamlit run app.py
+streamlit run streamlit_app.py
 ```
+
+### Hugging Face Spaces Deployment
+The application is deployed on Hugging Face Spaces at: **https://huggingface.co/spaces/Rhinks/TalentScout**
+
+#### Setup Steps:
+1. Create a Hugging Face Space with Streamlit runtime
+2. Push code to Space repo:
+   ```bash
+   git clone https://huggingface.co/spaces/{username}/{space-name}
+   cp streamlit_app.py orchestrator.py requirements.txt agents/ to cloned repo
+   git push
+   ```
+3. Add API key in Space **Settings** → **Repository secrets**:
+   - Name: `OPENAI_API_KEY`
+   - Value: Your OpenAI API key
+4. Space auto-deploys and runs at the provided URL
+
+Note: Rename `app.py` to `streamlit_app.py` for HF Spaces auto-detection.
 
 ### Cloud Deployment (Future)
 - AWS EC2 with Streamlit Server
@@ -307,7 +326,8 @@ For technical issues or deployment help, refer to the documentation above.
 
 ---
 
-**Last Updated**: December 2024
+**Last Updated**: December 17, 2024
 **Version**: 0.1.0
 **Python Version**: 3.12+
-**Status**: Functional, Assignment Complete
+**Status**: Functional, Deployed on HF Spaces
+**Live Demo**: https://huggingface.co/spaces/Rhinks/TalentScout

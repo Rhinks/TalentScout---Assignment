@@ -10,8 +10,8 @@ import streamlit as st
 dotenv.load_dotenv()
 
 
-OPENAI_API=os.getenv("OPENAI_API")
-client = OpenAI(api_key=OPENAI_API)
+OPENAI_API_KEY=os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=OPENAI_API_KEY)
 
 class TechQuestions(BaseModel):
     questions: list[str]

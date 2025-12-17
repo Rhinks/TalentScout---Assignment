@@ -15,7 +15,7 @@ class EvaluationResult(BaseModel):
 
 dotenv.load_dotenv()
 
-client = OpenAI(api_key=os.getenv("OPENAI_API"))
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def assessment_agent(candidate_data, questions, answers):
 

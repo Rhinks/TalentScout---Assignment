@@ -17,8 +17,8 @@ class Info(BaseModel):
     loc: Optional[str] = None
     tech_stack: Optional[list[str]] = None
 
-OPENAI_API=os.getenv("OPENAI_API")
-client = OpenAI(api_key=OPENAI_API)
+OPENAI_API_KEY=os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=OPENAI_API_KEY)
 
 def info_collection_agent(user_input:str, candidate_data):
     response = client.responses.parse(
