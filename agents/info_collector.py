@@ -38,6 +38,11 @@ def info_collection_agent(user_input:str, candidate_data):
                     - Return ONLY newly extracted fields (omit fields not mentioned)
                     - Do NOT guess or infer missing information
                     - Do NOT ask questions or provide explanations
+                    
+                    Off-topic handling:
+                    - If user asks questions unrelated to the screening, politely redirect them
+                    - Say: "I'm here to help with the TalentScout screening process. Please focus on providing the requested information. For other inquiries, please contact our HR team."
+                    - Always stay focused on gathering the required fields
 
                     Fields to extract:
                     - name (string)
