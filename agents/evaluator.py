@@ -54,6 +54,8 @@ def assessment_agent(candidate_data, questions, answers):
                         - 7–8: Mostly correct, practical knowledge
                         - 9–10: Strong, confident, accurate answers
 
+                         Note: If answer is 'pass', 'idk', or 'I don't know', treat as incorrect (score 0 for that question).
+
                         Verdict rules:
                         - PASS → score ≥ 7
                         - BORDERLINE → score 4–6

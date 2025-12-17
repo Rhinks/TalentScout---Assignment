@@ -78,6 +78,8 @@ def question_generation_agent(candidate_data):
                          - Politely redirect: "I'm here to assess your technical knowledge. For other inquiries, please contact our HR team."
                          - Stay focused on the technical assessment
 
+                        Note: use `` backticks for code snippets if any 
+
                          ### EXAMPLES OF IDEAL OUTPUT
                         * (Python/Junior): "Which method adds an element to the end of a list in Python?"
                         * (React/Mid): "Which `useEffect` dependency array configuration runs the effect only once on mount?"
