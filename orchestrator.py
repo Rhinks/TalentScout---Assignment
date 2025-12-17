@@ -1,7 +1,7 @@
 # Manages entire conversation flow
 # routes user input to the correct agent, and updates the state
 from agents.info_collector import Info
-from agents import info_collector
+from agents import info_collector, question_generator
 import streamlit as st
 
 REQUIRED_FIELDS = [
@@ -32,7 +32,7 @@ def is_complete(candidate_data: dict) -> bool:
     )
 
 
-def process_chat_turn(user_input:str, current_stage:str, candidate_data, messages):
+def process_chat_turn(user_input:str, current_stage:str, candidate_data):
     
     if user_input=="exit":
         #stop the chat. and give final response like thank you or something.
@@ -65,12 +65,53 @@ def process_chat_turn(user_input:str, current_stage:str, candidate_data, message
 
             
 
-    if current_stage=="QUESTION_GENERATION":
-        pass
-        #generate questions based on user's tech stack and desired position
+    if current_stage == "QUESTION_GENERATION":
+        if "questions" not in st.session_state:
+            result = question_generator.question_generation_agent(
+                st.session_state.candidate_data
+            )
+            st.session_state.questions = result["questions"]
+
+        st.session_state.stage = "ASK_QUESTIONS"
+        return (
+            "Your screening questions are ready.\n\n"
+            "You’ll be asked a few questions one by one. "
+            "Please answer each question clearly and conscisely. If you’re unsure, share what you know. "
+            
+        )
+
+
+    if current_stage == "ASK_QUESTIONS":
+        if "current_question_index" not in st.session_state:
+            st.session_state.current_question_index = 0
+            st.session_state.answers = {}
+
+            # Ask first question
+            return f"Question 1:\n\n{st.session_state.questions[0]}"
+
+        q_idx = st.session_state.current_question_index
+        questions = st.session_state.questions
+
+        # Store answer to previous question
+        st.session_state.answers[q_idx] = user_input
+        st.session_state.current_question_index += 1
+
+        # Ask next question or move on
+        if st.session_state.current_question_index < len(questions):
+            next_q = st.session_state.current_question_index
+            return f"Question {next_q + 1}:\n\n{questions[next_q]}"
+        else:
+            st.session_state.stage = "ASSESSMENT"
+            return "All questions answered. Evaluating your responses..."
+
+
     if current_stage=="ASSESSMENT":
         #after user has answered all the questions this IF block calls evaluator.py agent and perform evaluation of candidates
+        #all the questions are now in session.questions
         pass
+        
+
+
     if current_stage=="CONVO_END":
         #end conversation gracefully and tell user what happens next like hr will contact you and all
         pass

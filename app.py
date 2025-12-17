@@ -52,6 +52,6 @@ if prompt := st.chat_input("Enter your response"):
     with st.chat_message("user"):
         st.markdown(prompt)
     with st.chat_message("assistant"):
-        message = process_chat_turn(prompt, st.session_state.stage, st.session_state.candidate_data, st.session_state.messages)
+        message = process_chat_turn(prompt, st.session_state.stage, st.session_state.candidate_data)
         st.write(message)
         st.session_state.messages.append({"role": "assistant", "content": message})
